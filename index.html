@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <title>Tic-Tac-Toe</title>
     <link href="https://fonts.googleapis.com/css?family=Indie+Flower" rel="stylesheet">
@@ -8,29 +9,45 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
     <div>
         <div class="title" id="title">
-            <h1>Tic Tac Toe</h1>
+            <h1>Tic-Tac-Toe</h1>
         </div>
-        <div class="button">
-            <button id="resetButton">Reset</button>
-        </div> 
-        <div class="container" id="board">
-            <div cellIndex="0" class="cell"></div>
-            <div cellIndex="1" class="cell"></div>
-            <div cellIndex="2" class="cell"></div>
-            <div cellIndex="3" class="cell"></div>
-            <div cellIndex="4" class="cell"></div>
-            <div cellIndex="5" class="cell"></div>
-            <div cellIndex="6" class="cell"></div>
-            <div cellIndex="7" class="cell"></div>
-            <div cellIndex="8" class="cell"></div>  
+        <div class="selectMode">
+            <label for="gameMode">Game Mode:</label>
+            <select id="playerSelect" onchange="changeMode()">
+                <option value="2Player">2 Player</option>
+                <option value="Computer">Computer</option>
+            </select>
         </div>
-        <div class="gameStatus" id="statusDisplay"></div>
-        <div id="winnerText"></div>
+        <div class="playernames">
+            <input type="text" id="player1Name" placeholder="Player 1">
+            <input type="text" id="player2Name" placeholder="Player 2">
+        </div>
+    </div>
+    <div class="gameStatus" id="statusDisplay"></div>
+    <div id="winnerText" class="winner-text"></div>
+    </div id="drawText" class="draw-text">
+    </div>
+    <div class="container" id="board">
+        <div cellIndex="0" class="cell"></div>
+        <div cellIndex="1" class="cell"></div>
+        <div cellIndex="2" class="cell"></div>
+        <div cellIndex="3" class="cell"></div>
+        <div cellIndex="4" class="cell"></div>
+        <div cellIndex="5" class="cell"></div>
+        <div cellIndex="6" class="cell"></div>
+        <div cellIndex="7" class="cell"></div>
+        <div cellIndex="8" class="cell"></div>
+    </div>
+    <div class="button">
+        <button id="resetButton">Reset</button>
+    </div>
     </div>
 
     <script src="./app.js" defer></script>
 </body>
+
 </html>

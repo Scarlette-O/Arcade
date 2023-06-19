@@ -2,6 +2,10 @@ const cells = document.getElementsByClassName("cell");
 const resetButton = document.getElementById("resetButton");
 const statusDisplay = document.getElementById("statusDisplay");
 const winnerText = document.getElementById("winnerText");
+const player1NameInput = document.getElementById("player1Name");
+const player2NameInput = document.getElementById("player2Name");
+const player1Display = document.getElementById("player1Display");
+const player2Display = document.getElementById("player2Display");
 
 const winConditions = [
   [0, 1, 2],
@@ -17,12 +21,26 @@ const winConditions = [
 let options = ["", "", "", "", "", "", "", "", ""];
 let currentPlayer = "X";
 let running = false;
+let player1Name = "";
+let player2Name = "";
+let isComputerMode = false;
 
 function start() {
   Array.from(cells).forEach((cell) => cell.addEventListener("click", clicked));
   resetButton.addEventListener("click", resetGame);
-  statusDisplay.textContent = `Player ${currentPlayer}'s turn`;
+  player1Name = player1NameInput.value || "Player 1";
+  player2Name = player2NameInput.value || "Player 2";
+
+  const startingPlayer = Math.random() < 0.5 ? "X" : "O";
+  currentPlayer = startingPlayer;
+
+  player1Display.textContent = getPlayerName("X");
+  player2Display.textContent = getPlayerName("O");
+  statusDisplay.textContent = `${getPlayerName(currentPlayer)}'s turn`;
   running = true;
+  const playerSelect = document.getElementById("playerSelect");
+  playerSelect.addEventListener("change", changeMode);
+  changeMode();
 }
 
 function clicked() {
@@ -41,15 +59,38 @@ function updateCell(cell, index) {
   cell.classList.add(currentPlayer);
 }
 
+function getPlayerName(player) {
+  if (isComputerMode && player === "O") {
+    return "Computer";
+  }
+  return player === "X" ? player1Name : player2Name;
+}
+
 function changePlayer() {
   currentPlayer = currentPlayer === "X" ? "O" : "X";
-  statusDisplay.textContent = `Player ${currentPlayer}'s turn`;
+  const playerName = getPlayerName(currentPlayer);
+  statusDisplay.textContent = `${playerName}'s turn`;
+  player1Display.textContent = playerName;
+  player2Display.textContent = playerName === player1Name ? player2Name : player1Name;
+}
+
+function changeMode() {
+  const playerSelect = document.getElementById("playerSelect");
+  isComputerMode = playerSelect.value === "Computer";
+  resetGame();
+  if (isComputerMode) {
+    player2NameInput.value = "Computer";
+    player2NameInput.disabled = true;
+  } else {
+    player2NameInput.value = "";
+    player2NameInput.disabled = false;
+  }
 }
 
 function resetGame() {
   currentPlayer = "X";
   options = ["", "", "", "", "", "", "", "", ""];
-  statusDisplay.textContent = `Player ${currentPlayer}'s turn`;
+  statusDisplay.textContent = `${getPlayerName(currentPlayer)}'s turn`;
   Array.from(cells).forEach((cell) => {
     cell.textContent = "";
     cell.classList.remove("X", "O");
@@ -66,9 +107,11 @@ function checkWinner() {
       options[b] === currentPlayer &&
       options[c] === currentPlayer
     ) {
-      statusDisplay.textContent = `Player ${currentPlayer} wins!`;
-      winnerText.textContent = `Player ${currentPlayer} wins!`;
+      const winnerName = getPlayerName(currentPlayer);
+      statusDisplay.textContent = `${winnerName} wins!`;
+      winnerText.textContent = `${winnerName} wins!`;
       running = false;
+      winnerText.style.display = "block";
       return;
     }
   }
